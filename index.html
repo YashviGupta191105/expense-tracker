@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+
+    <form id="transaction-form">
+      <div class="form-group">
+        <select id="type" onchange="updateCategoryOptions()">
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+        </select>
+
+        <input type="number" id="amount" placeholder="Amount" required />
+        <select id="category" required>
+          <!-- Options will be populated dynamically -->
+        </select>
+
+        <input type="Date" id="date" required />
+        <button type="submit">
+          <i class="fa-solid fa-user-plus" style="margin-right: 10px;"></i>Add Transaction
+        </button>
+
+      </div>
+    </form>
+
+    <div class="summary-cards" id="summary">
+      <div class="card">
+        <h3>Balance</h3>
+        <p id="balance">₹0</p>
+      </div>
+      <div class="card">
+        <h3>Income</h3>
+        <p id="income">₹0</p>
+      </div>
+      <div class="card">
+        <h3>Expenses</h3>
+        <p id="expenses">₹0</p>
+      </div>
+    </div>
+
+    <div class="filters">
+      <label for="filter-date">Date:</label>
+      <input type="date" id="filter-date">
+
+      <label for="filter-type">Type:</label>
+      <select id="filter-type" onchange="updateFilterCategories()">
+        <option value="">All</option>
+        <option value="Income">Income</option>
+        <option value="Expense">Expense</option>
+      </select>
+
+      <label for="filter-category">Category:</label>
+      <select id="filter-category">
+        <option value="">All</option>
+      </select>
+      <div class="filter-buttons">
+        <button onclick="applyFilter()">
+          <i class="fas fa-check-circle"></i> Apply Filter
+        </button>
+        <button onclick="clearFilter()">
+          <i class="fas fa-eraser"></i> Clear
+        </button>
+
+      </div>
+    </div>
+
+
+    <div id="transaction-list">
+      <table id="transaction-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Amount (₹)</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="portfolio-section inline-layout">
+      <div class="chart-container">
+        <div class="networth-badge">Net Worth: <span id="networth">0</span></div>
+        <h3>Income Breakdown</h3>
+        <canvas id="incomeChart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <h3>Expense Breakdown</h3>
+        <canvas id="expenseChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+
+</body>
+
+</html>
