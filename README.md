@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# React Personal Finance Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A clean, powerful, and modern web application for tracking your personal finances. Built with React and TypeScript, this app helps you monitor your income and expenses with an interactive dashboard, persistent local storage, and advanced filtering.
 
-## Available Scripts
+## Key Features
 
-In the project directory, you can run:
+-   **Track Your Finances**: Easily add, view, and delete income and expense transactions.
+-   **Dynamic Dashboard**:
+    -   Displays **all** your transactions by default for a complete financial overview.
+    -   Features an optional **date-range filter** to analyze your finances over specific periods.
+    -   Provides at-a-glance summary cards for Balance, Income, and Expenses that update with your filters.
+-   **Portfolio Analysis**: A dedicated page with interactive **doughnut charts** to visualize your spending and income habits by category.
+-   **Persistent & Private**: All data is saved securely in your browser's `localStorage`. Nothing is sent to a server, ensuring your financial data remains private.
+-   **Type-Safe Codebase**: Built with **TypeScript** for a more robust, maintainable, and error-resistant application.
+-   **Modern Tech**: Uses modern React features like Hooks and Context API for efficient and clean state management.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-   **Frontend:** React.js, **TypeScript**
+-   **State Management:** React Hooks (`useState`, `useEffect`, `useContext`)
+-   **Routing:** `react-router-dom`
+-   **Charting:** `chart.js` & `react-chartjs-2`
+-   **Styling:** Custom CSS
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## How It Works
 
-### `npm run build`
+The application is built around a centralized state management system using **React Context**.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1.  **`TransactionContext`**: A global provider holds all `transactions` and `loans`, making them available throughout the app without prop-drilling. It also handles saving data to `localStorage` whenever it changes.
+2.  **`DashboardPage.tsx`**: This component serves as the main controller. It consumes the transaction data, manages the state for the date filter, and calculates the summary metrics.
+3.  **Data Filtering**: By default, all transactions are shown. When a user selects a date range, a `useMemo` hook efficiently re-calculates the list of transactions to display, ensuring fast performance without unnecessary re-renders.
