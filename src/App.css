@@ -455,3 +455,108 @@ h1 {
   background-color: #ffffff;
 }
 
+/* Add these styles to your App.css file */
+
+/* Controls for Date Range and Action Buttons */
+.dashboard-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f0faf9;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.dashboard-controls div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-controls label {
+  font-weight: 600;
+  color: #333;
+}
+
+.dashboard-controls input[type="date"] {
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Style for the new Add Loan button */
+.add-btn.loan-btn {
+  background-color: #ff8f00; /* A different color to distinguish */
+}
+
+.add-btn.loan-btn:hover {
+  background-color: #e65100;
+}
+
+/* Update Summary Cards to handle four items gracefully */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+/* Update Transaction Table for new columns */
+#transaction-table th,
+#transaction-table td {
+  padding: 10px 8px; /* Adjust padding if needed */
+  vertical-align: middle;
+}
+
+#transaction-table thead th {
+  /* This ensures the header text doesn't wrap awkwardly */
+  white-space: nowrap;
+}
+
+
+/* Update input for datetime-local */
+.form-group input[type="datetime-local"] {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Add to App.css */
+
+/* Update dashboard controls for better layout */
+.dashboard-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  justify-content: flex-start; /* Align items to the start */
+}
+
+/* A container for the main action buttons */
+.dashboard-controls .action-buttons {
+  margin-left: auto; /* Pushes the action buttons to the right */
+  display: flex;
+  gap: 10px;
+}
+
+/* Style for the new clear button */
+.clear-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #6c757d; /* A neutral gray color */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.clear-btn:hover {
+  background-color: #5a6268;
+}
