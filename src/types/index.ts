@@ -1,9 +1,18 @@
-export interface Loan {
-  id: string; // A unique identifier
-  instrument: string; // e.g., 'Bajaj Finance EMI'
-  category: string; // e.g., 'Gadget Purchase'
+export interface Repayment {
+  id: string;
   amount: number;
-  date: string; // Format: 'YYYY-MM-DD'
+  date: string;
+  notes?: string; // For adding details like "EMI" or "Early payment"
+}
+
+export interface Loan {
+  id: string;
+  instrument: string;
+  category: string;
+  amount: number;
+  date: string;
+  repayments?: Repayment[];
+  status: 'Active' | 'Paid'; 
 }
 
 export interface Transaction {

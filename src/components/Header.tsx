@@ -4,13 +4,14 @@ interface Props {
   metrics: {
     totalFunds: number;
     totalExpenses: number;
-    loanAmountUsed: number;
+    totalLoanValue: number;
     netWorth: number;
   }
 }
 
 const Header = ({ metrics }: Props) => {
-  const { totalFunds, totalExpenses, loanAmountUsed, netWorth } = metrics;
+  const { totalFunds, totalExpenses, totalLoanValue, netWorth } = metrics;
+
   return (
     <div className="summary-cards" id="summary">
       <div className="card">
@@ -22,11 +23,12 @@ const Header = ({ metrics }: Props) => {
         <p>₹{totalExpenses.toFixed(2)}</p>
       </div>
       <div className="card">
-        <h3>Loan Tracked</h3>
-        <p>₹{loanAmountUsed.toFixed(2)}</p>
+        {/* CHANGED: Update the title and the value to display */}
+        <h3>Outstanding Loans</h3>
+        <p>₹{totalLoanValue.toFixed(2)}</p>
       </div>
       <div className="card">
-        <h3>Net Worth (Flow)</h3>
+        <h3>Net Worth</h3>
         <p>₹{netWorth.toFixed(2)}</p>
       </div>
     </div>

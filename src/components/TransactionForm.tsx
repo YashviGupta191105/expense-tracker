@@ -25,7 +25,12 @@ const TransactionForm = ({ onClose }: Props) => {
   const [categories, setCategories] = useState(incomeCategories);
 
   // UPDATED: Combine regular fund sources with available loans for the dropdown
-  const availableFundSources = [...fundSources, ...loans.map(l => `${l.instrument} (Loan)`)];
+  const availableFundSources = [
+    ...fundSources, 
+    ...loans
+      .filter(loan => loan.status === 'Active') // Only include active loans
+      .map(l => `${l.instrument} (Loan)`) // Then map them to strings
+  ];
 
   useEffect(() => {
     setCategories(type === 'Income' ? incomeCategories : expenseCategories);

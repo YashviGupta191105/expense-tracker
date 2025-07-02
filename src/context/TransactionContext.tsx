@@ -1,11 +1,12 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { Transaction, Loan } from '../types';
+import React, { createContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
+import { Transaction, Loan, Repayment } from '../types';
 
 interface TransactionContextType {
   transactions: Transaction[];
   setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
   loans: Loan[];
   setLoans: React.Dispatch<React.SetStateAction<Loan[]>>;
+  addRepayment: (loanId: string, repayment: Omit<Repayment, 'id'>) => void;
   fundSources: string[];
   incomeDestinations: string[];
 }
@@ -42,15 +43,43 @@ export const TransactionProvider = ({ children }: TransactionProviderProps) => {
   useEffect(() => {
     localStorage.setItem('loans', JSON.stringify(loans));
   }, [loans]);
-  
-  const contextValue: TransactionContextType = {
+
+  // CORRECTED: The addRepayment function is wrapped in useCallback
+  const addRepayment = useCallback((loanId: string, repaymentData: Omit<Repayment, 'id'>) => {
+    const newRepayment: Repayment = {
+      id: Date.now().toString(),
+      ...repaymentData
+    };
+
+    setLoans(currentLoans =>
+      currentLoans.map(loan => {
+        if (loan.id === loanId) {
+          // Add the new repayment
+          const updatedRepayments = loan.repayments ? [...loan.repayments, newRepayment] : [newRepayment];
+          
+          // Check if the loan is now paid off
+          const totalRepaid = updatedRepayments.reduce((sum, p) => sum + p.amount, 0);
+          const newStatus = totalRepaid >= loan.amount ? 'Paid' : 'Active';
+
+          // Return the updated loan object with new repayment and new status
+          return { ...loan, repayments: updatedRepayments, status: newStatus };
+        }
+        return loan; // Return other loans unchanged
+      })
+    );
+  }, []); // The dependency array can be empty because setLoans is stable.
+
+  // CORRECTED: The context value is wrapped in useMemo for optimization
+  const contextValue = useMemo(() => ({
     transactions,
     setTransactions,
     loans,
     setLoans,
+    addRepayment,
     fundSources,
     incomeDestinations
-  };
+  }), [transactions, loans, addRepayment, fundSources, incomeDestinations]);
+
 
   return (
     <TransactionContext.Provider value={contextValue}>

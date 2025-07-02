@@ -23,6 +23,7 @@ const TransactionSection = ({ transactions }: Props) => {
 
   return (
     <div className="transaction-wrapper">
+      <h2>Transactions</h2>
       <table id="transaction-table">
         <thead>
           <tr>
@@ -45,7 +46,15 @@ const TransactionSection = ({ transactions }: Props) => {
                 <td>{t.amount.toFixed(2)}</td>
                 <td>{new Date(t.datetime).toLocaleString()}</td>
                 <td>{t.type === 'Income' ? t.destination : t.fundSource}</td>
-                <td><button onClick={() => handleDelete(t)}>Delete</button></td>
+                <td>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(t)}
+                  >
+                    <i className="fas fa-trash-alt" style={{ marginRight: '8px' }}></i>
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           )}

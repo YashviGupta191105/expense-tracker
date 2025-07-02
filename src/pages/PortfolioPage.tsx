@@ -5,14 +5,13 @@ import { TransactionContext } from '../context/TransactionContext';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import '../App.css';
-import { Transaction } from '../types'; // Import our Transaction type
+import { Transaction } from '../types';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PortfolioPage = () => {
   const context = useContext(TransactionContext);
 
-  // Error Boundary: Safely handle the case where context is not yet available.
   if (!context) {
     return <div>Loading...</div>;
   }
@@ -25,14 +24,19 @@ const PortfolioPage = () => {
   const totalIncome = incomeData.reduce((sum, t) => sum + t.amount, 0);
   const totalExpense = expenseData.reduce((sum, t) => sum + t.amount, 0);
   
-  // NEW: Calculate total outstanding loan amount
-  const totalLoanValue = loans.reduce((sum, l) => sum + l.amount, 0);
+  // This logic is now perfectly consistent with DashboardPage
+  const totalOutstandingLoanValue = loans
+    .filter(loan => loan.status === 'Active') // Only include active loans
+    .reduce((total, loan) => {
+      const principal = loan.amount;
+      const repaid = loan.repayments?.reduce((repaymentSum, p) => repaymentSum + p.amount, 0) || 0;
+      return total + (principal - repaid);
+    }, 0);
 
-  // UPDATED: Net Worth calculation now includes loans
-  const netWorth = totalIncome - totalExpense - totalLoanValue;
+  // Net Worth is now more accurate, reflecting your true liabilities
+  const netWorth = totalIncome - totalExpense - totalOutstandingLoanValue;
 
   const getCategoryTotals = (data: Transaction[]) => {
-    // Specify the type for the accumulator in reduce
     return data.reduce((acc: { [key: string]: number }, t) => {
       acc[t.category] = (acc[t.category] || 0) + t.amount;
       return acc;
@@ -60,13 +64,12 @@ const PortfolioPage = () => {
     }],
   };
 
-  // Sort transactions by datetime before slicing
   const recentTransactions = [...transactions]
     .sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime())
     .slice(0, 5);
 
   return (
-    <div className="portfolio-container" style={{ padding: '20px' }}>
+    <div className="portfolio-container">
       <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>My Financial Portfolio</h2>
 
       <div className="summary-cards" style={{ display: 'flex', gap: '20px', marginBottom: '40px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -80,7 +83,8 @@ const PortfolioPage = () => {
         </div>
         <div className="card">
           <h3>Outstanding Loans</h3>
-          <p>₹{totalLoanValue.toFixed(2)}</p>
+          {/* CORRECTED: Use the correct variable name */}
+          <p>₹{totalOutstandingLoanValue.toFixed(2)}</p>
         </div>
         <div className="card">
           <h3>Net Worth</h3>
@@ -113,7 +117,7 @@ const PortfolioPage = () => {
           <tbody>
             {recentTransactions.length > 0 ? (
               recentTransactions.map((t, i) => (
-                <tr key={i}>
+                <tr key={t.id}> {/* Use t.id for a more stable key */}
                   <td>{new Date(t.datetime).toLocaleDateString()}</td>
                   <td>{t.type}</td>
                   <td>{t.category}</td>
